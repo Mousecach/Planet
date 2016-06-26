@@ -6,7 +6,6 @@ b4w.register("Planet", function(exports, require) {
 // import modules used by the app
 var m_app       = require("app");
 var m_data      = require("data");
-var m_lights    = require("lights");
 
 /**
  * export the method to initialize the app (called at the bottom of this file)
@@ -46,9 +45,6 @@ function load() {
  */
 function load_cb(data_id) {
     m_app.enable_camera_controls();
-
-    // place your code here
-	m_lights.set_day_time(0.0);
 }
 
 
