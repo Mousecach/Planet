@@ -1,27 +1,28 @@
 [info]
 author = Mousecach
+icon = .b4w_icon.png
 name = Planet
-title = First planet
-icon = 
+title = Planet
 
 [paths]
-assets_dirs = apps_dev/Planet;
-blend_dirs = apps_dev/Planet;
-blender_exec = blender
-build_dir = apps_dev/Planet
+assets_dirs = projects/Planet/assets;
+blend_dirs = projects/Planet/blender;
+blender_exec = G:\Games\SteamLibrary\steamapps\common\Blender\blender.exe
+build_dir = projects/Planet/build
 deploy_dir = 
 
 [compile]
 apps = 
 css_ignore = 
-engine_type = update
+engine_type = copy
+ignore = 
 js_ignore = 
-optimization = simple
-use_physics = 
-use_smaa_textures = 
-version = 
+optimization = advanced
+use_physics = True
 
 [deploy]
-assets_path_prefix = 
+assets_path_dest = assets
+assets_path_prefix = assets
+ignore = 
 override = 
 

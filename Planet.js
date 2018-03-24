@@ -1,11 +1,20 @@
 "use strict"
 
 // register the application module
-b4w.register("Planet", function(exports, require) {
+b4w.register("Planet_main", function(exports, require) {
 
 // import modules used by the app
 var m_app       = require("app");
+var m_cfg       = require("config");
 var m_data      = require("data");
+var m_preloader = require("preloader");
+var m_ver       = require("version");
+
+// detect application mode
+var DEBUG = (m_ver.type() == "DEBUG");
+
+// automatically detect assets path
+var APP_ASSETS_PATH = DEBUG? m_cfg.get_assets_path("Planet"): "/assets/B4W/Projects/Planet/assets/";
 
 /**
  * export the method to initialize the app (called at the bottom of this file)
@@ -14,14 +23,14 @@ exports.init = function() {
     m_app.init({
         canvas_container_id: "main_canvas_container",
         callback: init_cb,
-        show_fps: false,
-        console_verbose: true,
+        show_fps: DEBUG,
+        console_verbose: DEBUG,
         autoresize: true
     });
 }
 
 /**
- * callback executed when the app is initialized 
+ * callback executed when the app is initialized
  */
 function init_cb(canvas_elem, success) {
 
@@ -30,6 +39,15 @@ function init_cb(canvas_elem, success) {
         return;
     }
 
+    m_preloader.create_preloader();
+
+    // ignore right-click on the canvas element
+    canvas_elem.oncontextmenu = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    };
+
     load();
 }
 
@@ -37,18 +55,34 @@ function init_cb(canvas_elem, success) {
  * load the scene data
  */
 function load() {
-    m_data.load("Planet.json", load_cb);
+    m_data.load(APP_ASSETS_PATH + "Planet.json", load_cb, preloader_cb);
 }
 
 /**
- * callback executed when the scene is loaded
+ * update the app's preloader
  */
-function load_cb(data_id) {
+function preloader_cb(percentage) {
+    m_preloader.update_preloader(percentage);
+}
+
+/**
+ * callback executed when the scene data is loaded
+ */
+function load_cb(data_id, success) {
+
+    if (!success) {
+        console.log("b4w load failure");
+        return;
+    }
+
     m_app.enable_camera_controls();
+
+    // place your code here
+
 }
 
 
 });
 
 // import the app module and start the app by calling the init method
-b4w.require("Planet").init();
+b4w.require("Planet_main").init();
